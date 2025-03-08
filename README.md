@@ -17,9 +17,14 @@ An AI-powered code generation tool that helps developers quickly generate high-q
 - 🎯 Clean code output with proper formatting
 - 🚀 Real-time code editing with syntax highlighting
 
-## Example Usage
+## Documentation & Examples
 
-Here's an example of generating a QuickSort implementation in Java:
+For detailed documentation and examples, please refer to our comprehensive guide:
+[CodeGenie - Hackathon Sample Project with template.docx](codegen-%20Hackathon%20Sample%20Project%20with%20template.docx)
+
+### Quick Example:
+
+Here's a sample of generating a QuickSort implementation in Java:
 
 ### Input Prompt:
 ```
