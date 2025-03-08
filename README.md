@@ -4,7 +4,7 @@ An AI-powered code generation tool that helps developers quickly generate high-q
 
 ## Features
 
-- 🤖 AI-powered code generation using CodeLlama
+- 🤖 AI-powered code generation using Google's Gemini 1.5 Flash
 - 🎨 Beautiful, modern UI with dark theme
 - 💻 Support for multiple programming languages:
   - Python
@@ -20,7 +20,7 @@ An AI-powered code generation tool that helps developers quickly generate high-q
 ## Documentation & Examples
 
 For detailed documentation and examples, please refer to our comprehensive guide:
-[CodeGenie - Hackathon Sample Project with template.docx](codegen-%20Hackathon%20Sample%20Project%20with%20template.docx)
+[CodeGenie - Hackathon Sample Project with template.pdf](codegen-%20Hackathon%20Sample%20Project%20with%20template.pdf)
 
 ### Quick Example:
 
@@ -47,7 +47,7 @@ The AI automatically:
 - Next.js 13+ with App Router
 - TypeScript
 - Tailwind CSS
-- CodeLlama (via Replicate API)
+- Google Gemini 1.5 Flash API
 - Monaco Editor
 
 ## Getting Started
@@ -65,15 +65,11 @@ npm install
 yarn install
 ```
 
-3. Set up your Replicate API key:
-   - Create an account at [Replicate](https://replicate.com)
-   - Get your API token from [https://replicate.com/account](https://replicate.com/account)
-   - Note: If you encounter a 402 Payment Required error:
-     - Create a new Replicate account to get fresh credits
-     - Or upgrade to a paid account for uninterrupted access
+3. Set up your Gemini API key:
+   - Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
    - Create a `.env.local` file and add your API key:
 ```
-REPLICATE_API_KEY=your_api_key_here
+GEMINI_API_KEY=your_api_key_here
 ```
 
 4. Run the development server:
@@ -95,12 +91,10 @@ yarn dev
 
 ## API Usage Notes
 
-- The Replicate API requires authentication via an API token
-- New accounts get free credits to start with
-- If you run out of credits, you can:
-  - Create a new account to get fresh credits
-  - Upgrade to a paid account for continuous usage
-  - Check your credit balance at [Replicate Dashboard](https://replicate.com/account)
+- The Gemini API requires authentication via an API key
+- You can get a free API key from Google AI Studio
+- The free tier includes generous usage limits
+- For more information, visit [Google AI Studio](https://makersuite.google.com/)
 
 ## License
 

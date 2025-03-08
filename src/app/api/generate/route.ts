@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server'
 
-const API_URL = 'https://api.replicate.com/v1/predictions'
-const API_KEY = process.env.REPLICATE_API_KEY
-
-// Using a verified working model version of CodeLlama
-const MODEL_VERSION = "d24902e3fa9b698cc208b5e63136c4e26e828659a9f09827ca6ec5bb83014381"
+const API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent'
+const API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyB_5v0m7rapZHpBSWJKAX4l16JhihOwxlY'
 
 function detectLanguage(prompt: string): string {
   const langKeywords = {
@@ -83,7 +80,7 @@ export async function POST(req: Request) {
 
     if (!API_KEY) {
       return NextResponse.json(
-        { error: 'API key is not configured. Please set the REPLICATE_API_KEY environment variable.' },
+        { error: 'API key is not configured. Please set the GEMINI_API_KEY environment variable.' },
         { status: 500 }
       )
     }
@@ -98,44 +95,48 @@ export async function POST(req: Request) {
     const language = detectLanguage(prompt)
     const formattedPrompt = formatPrompt(prompt)
 
-    // Initial request to create prediction
-    const response = await fetch(API_URL, {
+    // Request to Gemini API
+    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Token ${API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        version: MODEL_VERSION,
-        input: {
-          prompt: formattedPrompt,
-          max_length: 1000,
-          temperature: 0.1,
-          top_p: 0.9
+        contents: [
+          {
+            parts: [
+              {
+                text: formattedPrompt
+              }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          topP: 0.8,
+          topK: 40,
+          maxOutputTokens: 2048,
         }
       })
     })
 
     if (!response.ok) {
       const error = await response.json()
-      console.error('Prediction creation error:', error)
-      
-      if (response.status === 402) {
-        return NextResponse.json(
-          { error: 'Payment required. Please check your Replicate API account balance.' },
-          { status: 402 }
-        )
-      }
+      console.error('Generation error:', error)
       
       return NextResponse.json(
-        { error: error.detail || 'Error creating prediction' },
+        { error: error.error?.message || 'Error generating code' },
         { status: response.status }
       )
     }
 
-    const prediction = await response.json()
-    const result = await pollPrediction(prediction.id, language)
-    return NextResponse.json({ code: result, language })
+    const result = await response.json()
+    
+    // Extract code from Gemini response
+    const generatedText = result.candidates[0].content.parts[0].text
+    const cleanedCode = cleanOutput(generatedText, language)
+    
+    return NextResponse.json({ code: cleanedCode, language })
 
   } catch (error: any) {
     console.error('Request error:', error)
@@ -144,52 +145,4 @@ export async function POST(req: Request) {
       { status: 500 }
     )
   }
-}
-
-async function pollPrediction(id: string, language: string): Promise<string> {
-  const maxAttempts = 60
-  const interval = 1000
-
-  for (let i = 0; i < maxAttempts; i++) {
-    try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        headers: {
-          'Authorization': `Token ${API_KEY}`,
-          'Content-Type': 'application/json',
-        }
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.detail || 'Error checking prediction status')
-      }
-
-      const prediction = await response.json()
-
-      if (prediction.status === 'succeeded') {
-        const output = prediction.output
-        if (!output) {
-          throw new Error('No output received from model')
-        }
-        return cleanOutput(
-          Array.isArray(output) ? output.join('') : output,
-          language
-        )
-      }
-
-      if (prediction.status === 'failed') {
-        throw new Error(prediction.error || 'Prediction failed')
-      }
-
-      if (prediction.status === 'canceled') {
-        throw new Error('Prediction was canceled')
-      }
-
-      await new Promise(resolve => setTimeout(resolve, interval))
-    } catch (error) {
-      throw error
-    }
-  }
-
-  throw new Error('Prediction timed out')
 } 

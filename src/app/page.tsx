@@ -205,7 +205,7 @@ export default function Home() {
           </div>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto font-light">
             Describe what you want to generate and let AI help you create the code.
-            Powered by advanced language models for accurate and efficient code generation.
+            Powered by Google's Gemini 1.5 Flash for accurate and efficient code generation.
           </p>
         </div>
 
