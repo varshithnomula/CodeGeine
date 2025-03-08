@@ -20,7 +20,7 @@ An AI-powered code generation tool that helps developers quickly generate high-q
 ## Documentation & Examples
 
 For detailed documentation and examples, please refer to our comprehensive guide:
-[CodeGenie - Hackathon Sample Project with template.pdf](codegen-%20Hackathon%20Sample%20Project%20with%20template.pdf)
+[CodeGenie - Hackathon Sample Project with template.pdf](codegen-%20Hackathon%20Sample%20Project%20with%20template%20(1).pdf)
 
 ### Quick Example:
 
