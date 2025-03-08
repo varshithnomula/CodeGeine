@@ -17,6 +17,26 @@ An AI-powered code generation tool that helps developers quickly generate high-q
 - 🎯 Clean code output with proper formatting
 - 🚀 Real-time code editing with syntax highlighting
 
+## Example Usage
+
+Here's an example of generating a QuickSort implementation in Java:
+
+### Input Prompt:
+```
+Implement a quicksort algorithm in java
+```
+
+### Generated Output:
+
+![Code Generation Example](quicksort-example.jpg)
+
+The AI automatically:
+- Detected Java as the target language
+- Generated a complete, working implementation
+- Added proper imports and class structure
+- Included method documentation
+- Applied correct formatting and indentation
+
 ## Tech Stack
 
 - Next.js 13+ with App Router
